@@ -1,8 +1,11 @@
 package com.lambdaschool.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -19,6 +22,10 @@ public class Book {
     @JoinColumn(name = "sectionid")
     @JsonIgnore
     private Section section;
+
+    @ManyToMany(mappedBy = "books")
+    @JsonIgnoreProperties("books")
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {}
 
@@ -60,5 +67,13 @@ public class Book {
 
     public void setSection(Section section) {
         this.section = section;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 }

@@ -37,7 +37,7 @@ public class DataController {
             @ApiResponse(code = 403, message = "Accessing the resources you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach can not be found")
     })
-    @PutMapping("/book/{id}")
+    @PutMapping("/{book/{id}")
     public Book updateBookById(@ApiParam(value="Param for updating Book body")@RequestBody Book updatedBook, @PathVariable long id) throws URISyntaxException {
         Optional<Book> newBook = bookRepos.findById(id);
         if (newBook.isPresent()) {
@@ -48,6 +48,12 @@ public class DataController {
             return null;
         }
     }
+
+    @PostMapping("/books/{bookid}/{authid}")
+    public void reAssignId(@PathVariable long bookid, @PathVariable long authorid) {
+            bookRepos.insertIntoWrote(bookid, authorid);
+    }
+
 
     @ApiOperation(value = "Delete book by id", response = List.class)
     @ApiResponses(value = {
